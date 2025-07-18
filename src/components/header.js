@@ -8,8 +8,14 @@ function Header(){
                     <img style={{width: '200px'}} src="img/log-unic.png" alt="Logo Unic" />
                 </div>
                 <div>
-                    <Link to="/">Inicio</Link>
-                    <Link to="/login">Login</Link> 
+                    <nav className="miNavegacion">
+                        <ul>
+                            <li><Link to="/">Inicio</Link></li>
+                            <li><Link to="/login">Login</Link></li> 
+                            <li><Link to="/dashboard">Dashboard</Link></li> 
+                            <li><Link to="/empleados">Empleados</Link></li> 
+                        </ul>
+                    </nav>
                 </div>
             </header>
         </>;

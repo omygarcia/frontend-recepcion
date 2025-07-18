@@ -96,3 +96,19 @@
     width: 90%;
   }
 }
+
+.miNavegacion li{
+    display: inline-block;
+}
+
+.miNavegacion a{
+    display: block;
+    color:#0c233f;
+    padding: 15px;
+    text-decoration: none;
+    transition: all 0.5s ease-in;
+}
+
+.miNavegacion a:hover{
+    background-color: #b09242;
+}
