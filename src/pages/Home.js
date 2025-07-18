@@ -11,16 +11,13 @@ function Home(){
                 <div className="uk-position-relative uk-visible-toggle uk-light" tabIndex="-1" uk-slideshow="ratio: 5:2" >
                 <div className="uk-slideshow-items">
                     <div>
-                        <img src="img/banner-unic1.jpg" alt="" uk-cover="true" />
+                        <img src="img/banner-unic1.jpeg" alt="" uk-cover="true" />
                         <div className="uk-position-center uk-position-small uk-text-center uk-light">
                             <Link to="/login" className="uk-button uk-button-primary">Ir al Login</Link> 
                         </div>
                     </div>
                     <div>
-                        <img src="img/banner-unic2.jpg" alt="" uk-cover="true" />
-                    </div>
-                    <div>
-                        <img src="img/banner-unic3.jpg" alt="" uk-cover="true" />
+                        <img src="img/banner-unic2.jpeg" alt="" uk-cover="true" />
                     </div>
                 </div>
 
