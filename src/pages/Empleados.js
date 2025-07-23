@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom";
 import Footer from "../components/footer";
 import Header from "../components/header";
+import { useEffect } from "react";
+import useEmpleado from "../hooks/useEmpleado";
 
 
 function Empleados(){
+    const {listarEmpleados, empelados} = useEmpleado();
+
+    useEffect(()=>{
+       listarEmpleados();
+    },[]);
+
     return <>
-        <div class="contenido-unic">
+        <div className="contenido-unic">
             <Header />
             <div className="contenido">
                 <div className="uk-container">
@@ -23,22 +31,25 @@ function Empleados(){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>ID</td>
-                                <td>Nombres</td>
-                                <td>Apellidos</td>
-                                <td>Cargo</td>
-                                <td>Departamento</td>
-                                <td>Email</td>
-                                <td>
-                                    <button className="uk-button uk-button-primary">
-                                        Editar
-                                    </button>
-                                    <button className="uk-button uk-button-danger">
-                                        Eliminar
-                                    </button>
-                                </td>
-                            </tr>
+                            {empelados.map((empl,index)=>(
+                                <tr>
+                                    <td>{empl.id_empleado}</td>
+                                    <td>{empl.nombres}</td>
+                                    <td>{empl.apellidos}</td>
+                                    <td>{empl.cargo}</td>
+                                    <td>{empl.departamento}</td>
+                                    <td>{empl.email}</td>
+                                    <td>
+                                        <button className="uk-button uk-button-primary">
+                                            Editar
+                                        </button>
+                                        <button className="uk-button uk-button-danger">
+                                            Eliminar
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                            
                         </tbody>
                     </table>
                 </div>

@@ -5,15 +5,16 @@ import Header from "../components/header";
 
 function Home(){
     return <>
-        <div class="contenido-unic">
+        <div className="contenido-unic">
             <Header />
             <div className="contenido">
-                <div className="uk-position-relative uk-visible-toggle uk-light" tabIndex="-1" uk-slideshow="ratio: 5:2" >
+                <div className="uk-position-relative uk-visible-toggle uk-light" tabIndex="-1" uk-slideshow="ratio: 3:1" >
                 <div className="uk-slideshow-items">
                     <div>
-                        <img src="img/banner-unic1.jpeg" alt="" uk-cover="true" />
+                        <img src="img/banner_16_53_unic.jpeg" alt="" uk-cover="true" />
                         <div className="uk-position-center uk-position-small uk-text-center uk-light">
-                            <Link to="/login" className="uk-button uk-button-primary">Ir al Login</Link> 
+                           <h2 className="uk-margin-remove">Center</h2>
+                           <p className="uk-margin-remove">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                     </div>
                     <div>

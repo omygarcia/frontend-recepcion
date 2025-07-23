@@ -1,11 +1,15 @@
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import './App.css';
+import axios from 'axios';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Empleados from './pages/Empleados';
 import Areas from './pages/Areas';
 import PdfArea from './pages/PdfArea';
+
+window.axios = axios;
+window.axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 function App() {
   return (

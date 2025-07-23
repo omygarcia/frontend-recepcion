@@ -55,6 +55,7 @@ function Areas() {
   useEffect(() => {
         console.log("Cambió la posicion:", posicion);
         setForm({...form,latitud:posicion.lat,longitud:posicion.lng});
+         console.log('api url',process.env.REACT_APP_API_URL);
     }, [posicion]);
 
 
