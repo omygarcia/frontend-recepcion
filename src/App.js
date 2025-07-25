@@ -7,9 +7,8 @@ import Dashboard from './pages/Dashboard';
 import Empleados from './pages/Empleados';
 import Areas from './pages/Areas';
 import PdfArea from './pages/PdfArea';
+import Documentos from './pages/Documentos';
 
-window.axios = axios;
-window.axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 function App() {
   return (
@@ -21,6 +20,7 @@ function App() {
         <Route path='/empleados' element={<Empleados />} />
         <Route path='/areas' element={<Areas />} />
         <Route path='/pdf-area' element={<PdfArea />} />
+        <Route path='/documentos' element={<Documentos />} />
       </Routes>
     </Router>
   );

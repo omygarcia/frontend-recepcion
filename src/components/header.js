@@ -15,6 +15,7 @@ function Header(){
                             <li><Link to="/dashboard">Dashboard</Link></li> 
                             <li><Link to="/empleados">Empleados</Link></li> 
                             <li><Link to="/areas">Areas</Link></li> 
+                            <li><Link to="/documentos">Documentos</Link></li> 
                         </ul>
                     </nav>
                 </div>

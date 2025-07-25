@@ -8,7 +8,7 @@ function Dashboard(){
         <div class="contenido-unic">
             <Header />
             <div className="contenido">
-              <h1>Dashboard</h1>
+              <h1>Panel</h1>
             </div>
             <Footer />
         </div>

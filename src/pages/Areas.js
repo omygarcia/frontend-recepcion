@@ -5,6 +5,7 @@ import { MapContainer, Marker, TileLayer, useMapEvents } from 'react-leaflet';
 import { useState, useEffect } from "react";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
+import TimePicker from 'react-time-picker';
 
 const centerInicial = {
   lat: 19.045466312411165,
@@ -48,6 +49,7 @@ function Areas() {
   const [posicion, setPosicion] = useState(centerInicial);
   const [form,setForm] = useState({
     area:"",
+    hora_salida:"",
     latitud:"",
     longitud:""
   });
@@ -149,7 +151,7 @@ function Areas() {
                 <div class="uk-width-1-4@s">
                     <label class="uk-form-label" for="form-stacked-text">Hora Salida:</label>
                     <div class="uk-form-controls">
-                        <input class="uk-input"  type="text" placeholder="" />
+                        <input class="uk-input"  type="text" placeholder=""onChange={e=>setForm({...form,hora_salida:e.target.value})} value={form.hora_salida} />
                     </div>
                 </div>
                 <div class="uk-width-1-4@s">
