@@ -74,6 +74,7 @@
     height: 100%;
     width: 100%;
     background-color: #b0924210;
+    margin-top: 80px;
 }
 .footer{
     background-color: #1f333d;
@@ -112,4 +113,38 @@
 
 .miNavegacion a:hover{
     background-color: #b09242;
+}
+
+/*.excel-icon::after{
+    content: url(../public/img/file_type_excel_icon_130611.png);
+}*/
+
+.excel-icon::after {
+  content: "";
+  display: inline-block;
+  width: 24px; /* ancho deseado */
+  height: 24px; /* alto deseado */
+  background-image: url(../public/img/file_type_excel_icon_130611.png);
+  background-size: contain; /* ajusta la imagen al contenedor */
+  background-repeat: no-repeat;
+}
+
+.word-icon::after {
+  content: "";
+  display: inline-block;
+  width: 24px; /* ancho deseado */
+  height: 24px; /* alto deseado */
+  background-image: url(../public/img/file_Word_download_icon-icons.com_68941.png);
+  background-size: contain; /* ajusta la imagen al contenedor */
+  background-repeat: no-repeat;
+}
+
+.pdf-icon::after {
+  content: "";
+  display: inline-block;
+  width: 24px; /* ancho deseado */
+  height: 24px; /* alto deseado */
+  background-image: url(../public/img/file_type_pdf_icon_130274.png);
+  background-size: contain; /* ajusta la imagen al contenedor */
+  background-repeat: no-repeat;
 }
