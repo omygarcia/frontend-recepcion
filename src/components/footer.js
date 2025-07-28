@@ -1,7 +1,7 @@
 function Footer(){
     return <>
-            <footer className="footer">
-                Derechos Reservados 2025
+            <footer>
+                © 2025 <strong>Universidad UNIC</strong>. Todos los derechos reservados.
             </footer>
         </>;
 }

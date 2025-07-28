@@ -1,30 +1,39 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
+import { Link } from "react-router-dom";
 
 
 function Login(){
         return <>
-        <div class="contenido-unic">
         <Header />
-                <div className="contenido" style={{display:"flex", justifyContent:'center',alignItems:'center'}}>
-                    <div className="content-login">
-                        <form class="uk-form-stacked uk-padding">
-                            <h3>Acceso al Sistema</h3>
-                            <div>
-                                <label class="uk-form-label">Correo:</label>
-                                <input type="text" className="uk-input uk-form-width-large" />
-                            </div>
-                            <div>
-                                <label class="uk-form-label">Password:</label>
-                                <input type="password" className="uk-input uk-form-width-large" />
-                            </div>
-                            <button className="uk-button uk-button-primary" type="button">Ingresar</button>
-
-                        </form>
+            <section className="hero">
+                <div className="overlay"></div>
+                <div className="hero-content">
+                    <h1>Bienvenido al Sistema de Recepción UNIC</h1>
+                    <p>Inicia sesión para gestionar accesos y procesos de forma rápida y segura.</p>
                     </div>
-                </div>
+                    
+                    <div className="login-box">
+                        <h2>Acceso al Sistema</h2>
+                        <form action="#" method="post">
+                            <label for="email">Correo:</label>
+                            <div className="input-group">
+                                <i className="fas fa-user"></i>
+                                <input type="email" id="email" name="email" placeholder="Correo" required />
+                            </div>
+
+                            <label for="password">Contraseña:</label>
+                            <div className="input-group">
+                                <i className="fas fa-lock"></i>
+                                <input type="password" id="password" name="password" placeholder="Contraseña" required />
+                            </div>
+
+                            <button type="submit">Iniciar sesión</button>
+                        </form>
+                        <Link href="#" className="forgot">¿Olvidaste tu contraseña?</Link>
+                    </div>
+            </section>
             <Footer />
-        </div>
     </>;
 }
 
