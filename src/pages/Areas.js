@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import TimePicker from 'react-time-picker';
+import useArea from "../hooks/useArea";
 
 const centerInicial = {
   lat: 19.045466312411165,
@@ -46,6 +47,7 @@ function DraggableMarker({ posicion, setPosicion }) {
 }
 
 function Areas() {
+  const {areas,listarAreas,nueva_area,setAreas} = useArea();
   const [posicion, setPosicion] = useState(centerInicial);
   const [form,setForm] = useState({
     area:"",
@@ -60,6 +62,15 @@ function Areas() {
          console.log('api url',process.env.REACT_APP_API_URL);
     }, [posicion]);
 
+  useEffect(()=>{
+    const cargar = async()=>{
+      const result = await listarAreas();
+      setAreas(result);
+    }
+    cargar();
+  },[]);
+
+
 
   return (
     <div className="contenido-unic">
@@ -73,19 +84,22 @@ function Areas() {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombres</th>
-                        <th>Apellidos</th>
-                        <th>Cargo</th>
+                        <th>Area</th>
+                        <th>Edificio</th>
+                        <th>Responsable</th>
                         <th>Departamento</th>
                         <th>Email</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>ID</td>
-                        <td>Nombres</td>
-                        <td>Apellidos</td>
+                  {areas.length === 0?(
+                    <img src="img/loading.gif" />
+                  ):(areas.map((area,index) => (
+                    <tr key={index}>
+                        <td>{area.id_area}</td>
+                        <td>{area.nombre_area}</td>
+                        <td>{area.responsable}</td>
                         <td>Cargo</td>
                         <td>Departamento</td>
                         <td>Email</td>
@@ -96,11 +110,12 @@ function Areas() {
                             <button className="uk-button uk-button-danger">
                                 Eliminar
                             </button>
-                            <button onClick={()=>window.open('/pdf-area', '_blank')} className="uk-button uk-button-primary">
+                            <button onClick={()=>window.open(process.env.REACT_APP_API_URL+'reportes/'+area.id_area, '_blank')} className="uk-button uk-button-primary">
                                 Ver QR
                             </button>
                         </td>
                     </tr>
+                  )))}
                 </tbody>
             </table>
         </div>
