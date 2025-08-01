@@ -1,14 +1,15 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 
 axios.defaults.headers.common.Authorization = 'Bearer ';
 
-const useArea = () =>{
-    const [areas,setAreas] = useState([]);
-    const listarAreas = async()=>{
+const useRegistro = () =>{
+    const [registros,setRegistros] = useState([]);
+    const [misRegistros,setMisRegistros] = useState([]);
+    const listaraRegistros = async()=>{
         try{
-            const {data} = await axios.get('/areas');
+            const {data} = await axios.get('/registro');
             console.log('data',data);
             return data;
         }
@@ -20,9 +21,9 @@ const useArea = () =>{
         }
     }
 
-    const nueva_area = async(form)=>{
+    const registar_entrada = async(form)=>{
          try{
-            const {data} = await axios.post('/areas/create',form);
+            const {data} = await axios.post('/registro/registar-entrada',form);
             console.log('data',data);
             return data;
         }
@@ -35,11 +36,13 @@ const useArea = () =>{
     }
 
     return{
-        listarAreas,
-        setAreas,
-        areas,
-        nueva_area
+        listaraRegistros,
+        setRegistros,
+        registros,
+        registar_entrada,
+        misRegistros,
+        setMisRegistros
     }
 }
 
-export default useArea;
+export default useRegistro;

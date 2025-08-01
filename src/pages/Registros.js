@@ -1,11 +1,11 @@
 import Footer from "../components/footer";
 import Header from "../components/header";
 import { useEffect, useState } from "react";
-import useEmpleado from "../hooks/useEmpleado";
+import useRegistro from "../hooks/useRegistro";
 
 
 function Empleados(){
-    const {listarEmpleados, setEmpleados, empleados, nuevo_empleado} = useEmpleado();
+    const {listaraRegistros,registros,setRegistros} = useRegistro();
     const [form,setForm] = useState({
         nombres:"",
         apellidos:"",
@@ -15,59 +15,42 @@ function Empleados(){
     });
 
     useEffect(()=>{
-       listarEmpleados().then((empl)=>{
-        console.log('ppp',empl);
-        setEmpleados(empl);
-       });
-       console.log(':))',empleados);
+       const cargar = async()=>{
+            const data = await listaraRegistros();
+            setRegistros(data);
+       }
+       cargar();
     },[]);
-
-    const agregar_empleado = async()=>{
-        await nuevo_empleado(form);
-    }
-
-
-    const limpiar = ()=>{
-        setForm({
-            nombres:"",
-            apellidos:"",
-            cargo:"",
-            departamento:"",
-            email:""
-        });
-    }
 
     return <>
         <div className="contenido-unic">
             <Header />
             <div className="contenido">
                 <div className="uk-container">
-                    <h1>Lista de empleados</h1>
+                    <h1>Registro de Asistencia</h1>
                     <button uk-toggle="target: #modal-areas" className="uk-button uk-button-primary">Nuevo</button>
                     <table className="uk-table uk-table-striped">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombres</th>
-                                <th>Apellidos</th>
-                                <th>Cargo</th>
-                                <th>Departamento</th>
-                                <th>Email</th>
+                                <th>Fecha</th>
+                                <th>Hora Entrada</th>
+                                <th>Hora Salida</th>
+                                <th>Empleado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {empleados.length === 0?(
+                            {registros.length === 0?(
                                 <div>No se necontraron empleados cargados</div>
                             ):(
-                                empleados.map((empl,index)=>(
+                                registros.map((reg,index)=>(
                                 <tr key={index}>
-                                    <td>{empl.id_empleado}</td>
-                                    <td>{empl.nombres}</td>
-                                    <td>{empl.apellidos}</td>
-                                    <td>{empl.cargo}</td>
-                                    <td>{empl.departamento}</td>
-                                    <td>{empl.email}</td>
+                                    <td>{reg.id_registro}</td>
+                                    <td>{reg.fecha_cita}</td>
+                                    <td>{reg.hora_ingreso}</td>
+                                    <td>{reg.hora_salida}</td>
+                                    <td>{reg?.empleado.nombres}</td>
                                     <td>
                                         <button className="uk-button uk-button-primary">
                                             Editar
@@ -143,7 +126,7 @@ function Empleados(){
                       </div>
                       <div className="uk-modal-footer uk-text-right">
                         <button className="uk-button uk-button-default uk-modal-close" type="button">CANCELAR</button>
-                        <button className="uk-button uk-button-primary" type="button" onClick={agregar_empleado}>GUARDAR</button>
+                        <button className="uk-button uk-button-primary" type="button">GUARDAR</button>
                       </div>
                     </div>
                 </div>

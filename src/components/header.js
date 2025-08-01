@@ -30,6 +30,7 @@ function Header(){
                         <Link to="/login">Login</Link> 
                         <Link to="/dashboard">Panel</Link> 
                         <Link to="/visitas">Visitas</Link> 
+                        <Link to="/registros">Registros</Link> 
                         <Link to="/empleados">Empleados</Link> 
                         <Link to="/areas">Areas</Link> 
                         <Link to="/documentos">Documentos</Link> 
