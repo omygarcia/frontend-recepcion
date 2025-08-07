@@ -5,7 +5,11 @@ import useEmpleado from "../hooks/useEmpleado";
 
 
 function Empleados(){
-    const {listarEmpleados, setEmpleados, empleados, nuevo_empleado} = useEmpleado();
+    const {listarEmpleados, setEmpleados, 
+        empleados, nuevo_empleado,
+        actualizar_empleado,
+        empleado,setEmpleado,show_empleado,eliminar_empleado
+    } = useEmpleado();
     const [form,setForm] = useState({
         nombres:"",
         apellidos:"",
@@ -15,15 +19,25 @@ function Empleados(){
     });
 
     useEffect(()=>{
-       listarEmpleados().then((empl)=>{
-        console.log('ppp',empl);
-        setEmpleados(empl);
-       });
-       console.log(':))',empleados);
+        const cargar = async()=>{
+            const result = await listarEmpleados();
+            setEmpleados(result);
+        }
+       cargar();
     },[]);
+
+    /*useEmpleado(()=>{
+        console.log(':))',empleados);
+    },[empleados]);*/
 
     const agregar_empleado = async()=>{
         await nuevo_empleado(form);
+    }
+
+    const editar_empleado = async(id)=>{
+        await show_empleado(id);
+        console.log(empleado);
+        UIkit.modal("#modal-areas").show();
     }
 
 
@@ -58,8 +72,8 @@ function Empleados(){
                         </thead>
                         <tbody>
                             {empleados.length === 0?(
-                                <div>No se necontraron empleados cargados</div>
-                            ):(
+                                <img src="img/loading.gif" />
+                                ):(
                                 empleados.map((empl,index)=>(
                                 <tr key={index}>
                                     <td>{empl.id_empleado}</td>
@@ -69,7 +83,7 @@ function Empleados(){
                                     <td>{empl.departamento}</td>
                                     <td>{empl.email}</td>
                                     <td>
-                                        <button className="uk-button uk-button-primary">
+                                        <button onClick={()=>editar_empleado(empl.id_empleado)} className="uk-button uk-button-primary">
                                             Editar
                                         </button>
                                         <button className="uk-button uk-button-danger">
