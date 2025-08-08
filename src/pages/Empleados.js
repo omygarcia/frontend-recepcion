@@ -26,9 +26,6 @@ function Empleados(){
        cargar();
     },[]);
 
-    /*useEmpleado(()=>{
-        console.log(':))',empleados);
-    },[empleados]);*/
 
     const agregar_empleado = async()=>{
         await nuevo_empleado(form);
@@ -37,7 +34,6 @@ function Empleados(){
     const editar_empleado = async(id)=>{
         await show_empleado(id);
         console.log(empleado);
-        UIkit.modal("#modal-areas").show();
     }
 
 
