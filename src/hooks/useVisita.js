@@ -37,7 +37,7 @@ const useVisita = () =>{
 
     const show_visitante = async(id)=>{
         try{
-            const {data} = await axios.get('/visitante/'+id);
+            const {data} = await axios.get('/visitante/show/'+id);
             console.log('data',data);
             setVisita(data);
             return data;

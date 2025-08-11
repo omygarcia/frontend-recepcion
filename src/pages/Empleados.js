@@ -71,7 +71,7 @@ function Empleados(){
 
     const btnNuevo = () =>{
         limpiar();
-        window.UIkit.modal('#modal-areas').show();
+        //window.UIkit.modal('#modal-areas').show();
     }
 
 

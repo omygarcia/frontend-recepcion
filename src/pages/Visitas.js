@@ -12,6 +12,7 @@ function Visitas(){
     const {getListTipoVisitante} = useTipoVisitante();
     const [catVisitantes,setCatVisitantes] = useState([]);
     const [form,setForm] = useState({
+        id_visitante:"",
         tipo_visitante:"",
         nombres:"",
         apellidos:"",
@@ -41,13 +42,27 @@ function Visitas(){
         console.log('Cat',catVisitantes);
     },[]);
 
+    const editar_visita = async(id)=>{
+        const visit = await show_visitante(id);
+        console.log(visit);
+        form.id_visistante = visit.id_visitante;
+        form.tipo_visitante = visit.tipo_visitante;
+        form.nombres = visit.nombres;
+        form.apellidos = visit.apellidos;
+        form.genero = visit.genero;
+        form.telefono = visit.telefono;
+        form.email = visit.email;
+        form.motivo_visita = visit.motivo_visita;
+        //window.UIkit.modal('#modal-areas').show();
+    }
+
     const actionNuevoVisitante = async(event)=>{
         event.preventDefault();
         try {
             const data = await nuevo_visitante(form);
             if(data.errors === undefined)
             {
-                await window.UIkit.modal.alert('El empleado se registro con exito!');
+                await window.UIkit.modal.alert('El visitante se registro con exito!');
                 const datos = await listaVisitas();
                 setVisitas(datos);
                 setMensajeError("");
@@ -70,6 +85,7 @@ function Visitas(){
 
     const limpiar = ()=>{
         setForm({
+            id_visitante:"",
             tipo_visitante:"",
             nombres:"",
             apellidos:"",
@@ -206,7 +222,7 @@ function Visitas(){
                                     <td>{empl.email}</td>
                                     <td>{empl.motivo_visita}</td>
                                     <td>
-                                        <button className="uk-button uk-button-primary">
+                                        <button onClick={ async()=>await editar_visita(empl.id_visitante)} className="uk-button uk-button-primary">
                                             Editar
                                         </button>
                                         <button className="uk-button uk-button-danger">
