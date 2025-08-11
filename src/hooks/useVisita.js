@@ -39,7 +39,7 @@ const useVisita = () =>{
         try{
             const {data} = await axios.get('/visitante/'+id);
             console.log('data',data);
-            setEmpleado(data);
+            setVisita(data);
             return data;
         }
         catch(error)

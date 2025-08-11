@@ -11,6 +11,7 @@ function Empleados(){
         empleado,setEmpleado,show_empleado,eliminar_empleado
     } = useEmpleado();
     const [form,setForm] = useState({
+        id_empleado:"",
         nombres:"",
         apellidos:"",
         cargo:"",
@@ -26,14 +27,51 @@ function Empleados(){
        cargar();
     },[]);
 
+    
+    useEffect(() => {
+        window.UIkit.modal('#modal-areas'); // o el selector que uses
+    }, []);
+
+
+
 
     const agregar_empleado = async()=>{
-        await nuevo_empleado(form);
+       
+        try {
+            if(form.id_empleado == "")
+            {
+                const data = await nuevo_empleado(form);
+                await window.UIkit.modal.alert('El empleado se agrego con exito!');
+            }else{
+                const data = await actualizar_empleado(form);
+                await window.UIkit.modal.alert('El empleado se actualizo con exito!')
+            }
+            limpiar();
+            const result = await listarEmpleados();
+            setEmpleados(result);
+        } catch (error) {
+             await window.UIkit.modal.alert('No se pudo registrar el empleado');
+        }
+        
+        /*alert('ooo');
+        await nuevo_empleado(form);*/
     }
 
     const editar_empleado = async(id)=>{
-        await show_empleado(id);
+        const empl = await show_empleado(id);
         console.log(empleado);
+        form.id_empleado = empl.id_empleado;
+        form.nombres = empl.nombres;
+        form.apellidos = empl.apellidos;
+        form.cargo = empl.cargo;
+        form.email = empl.email;
+        form.departamento = empl.departamento;
+        //window.UIkit.modal('#modal-areas').show();
+    }
+
+    const btnNuevo = () =>{
+        limpiar();
+        window.UIkit.modal('#modal-areas').show();
     }
 
 
@@ -47,13 +85,78 @@ function Empleados(){
         });
     }
 
+    const btnEliminar = async({id_empleado, nombres}) =>{
+        try{
+            const resp = await window.UIkit.modal.confirm('¿Desea eliminar al empleado: '+nombres+'?');
+            const data = await eliminar_empleado(id_empleado);
+            await window.UIkit.modal.alert('El empleado se elimino con exito!');
+            const result = await listarEmpleados();
+            setEmpleados(result);
+            console.log(resp);
+        }
+        catch(error){
+            console.log(error);
+        }
+        
+    }
+
     return <>
         <div className="contenido-unic">
             <Header />
             <div className="contenido">
                 <div className="uk-container">
+                    <form className="uk-grid-small" uk-grid="true">
+                            <div className="uk-width-1-2@s">
+                                <label className="uk-form-label">Nombres:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input" type="text" placeholder=""
+                                    value={form.nombres}
+                                    onChange={e=>setForm({...form,nombres:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                             <div className="uk-width-1-4@s">
+                                <label className="uk-form-label">Apellidos:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
+                                    value={form.apellidos}
+                                    onChange={e=>setForm({...form,apellidos:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                             <div className="uk-width-1-4@s">
+                                <label className="uk-form-label">Cargo:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder="" 
+                                    value={form.cargo}
+                                    onChange={e=>setForm({...form,cargo:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                             <div className="uk-width-1-2@s">
+                                <label className="uk-form-label">Departamento:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
+                                    value={form.departamento}
+                                    onChange={e=>setForm({...form,departamento:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                            <div className="uk-width-1-4@s">
+                                <label className="uk-form-label">E-mail:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
+                                    value={form.email}
+                                    onChange={e=>setForm({...form,email:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                        </form>
+                        <button onClick={agregar_empleado} className="uk-button uk-button-secondary">GUARDAR</button>
+                        <button onClick={limpiar} className="uk-button uk-button-secondary">LIMPIAR</button>
                     <h1>Lista de empleados</h1>
-                    <button uk-toggle="target: #modal-areas" className="uk-button uk-button-primary">Nuevo</button>
+                    <button onClick={btnNuevo} className="uk-button uk-button-primary">Nuevo</button>
+                    
                     <table className="uk-table uk-table-striped">
                         <thead>
                             <tr>
@@ -68,7 +171,12 @@ function Empleados(){
                         </thead>
                         <tbody>
                             {empleados.length === 0?(
-                                <img src="img/loading.gif" />
+                                <tr>
+                                    <td colSpan={7}>
+                                         <img src="img/loading.gif" />
+                                    </td>
+                                </tr>
+                               
                                 ):(
                                 empleados.map((empl,index)=>(
                                 <tr key={index}>
@@ -82,7 +190,7 @@ function Empleados(){
                                         <button onClick={()=>editar_empleado(empl.id_empleado)} className="uk-button uk-button-primary">
                                             Editar
                                         </button>
-                                        <button className="uk-button uk-button-danger">
+                                        <button onClick={async()=>await btnEliminar(empl)} className="uk-button uk-button-danger">
                                             Eliminar
                                         </button>
                                     </td>
@@ -105,8 +213,8 @@ function Empleados(){
                       <div className="uk-modal-body">
                         <form className="uk-grid-small" uk-grid="true">
                             <div className="uk-width-1-2@s">
-                                <label class="uk-form-label" for="form-stacked-text">Nombres:</label>
-                                <div class="uk-form-controls">
+                                <label className="uk-form-label">Nombres:</label>
+                                <div className="uk-form-controls">
                                     <input className="uk-input" type="text" placeholder=""
                                     value={form.nombres}
                                     onChange={e=>setForm({...form,nombres:e.target.value})}
@@ -114,46 +222,49 @@ function Empleados(){
                                 </div>
                             </div>
                              <div className="uk-width-1-4@s">
-                                <label className="uk-form-label" for="form-stacked-text">Apellidos:</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input"  type="text" placeholder=""
+                                <label className="uk-form-label">Apellidos:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
                                     value={form.apellidos}
                                     onChange={e=>setForm({...form,apellidos:e.target.value})}
                                     />
                                 </div>
                             </div>
-                             <div class="uk-width-1-4@s">
-                                <label class="uk-form-label" for="form-stacked-text">Cargo:</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input"  type="text" placeholder="" 
+                             <div className="uk-width-1-4@s">
+                                <label className="uk-form-label">Cargo:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder="" 
                                     value={form.cargo}
                                     onChange={e=>setForm({...form,cargo:e.target.value})}
                                     />
                                 </div>
                             </div>
-                             <div class="uk-width-1-2@s">
-                                <label class="uk-form-label" for="form-stacked-text">Departamento:</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input"  type="text" placeholder=""
+                             <div className="uk-width-1-2@s">
+                                <label className="uk-form-label">Departamento:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
                                     value={form.departamento}
                                     onChange={e=>setForm({...form,departamento:e.target.value})}
                                     />
                                 </div>
                             </div>
-                            <div class="uk-width-1-4@s">
-                                <label class="uk-form-label" for="form-stacked-text">E-mail:</label>
-                                <div class="uk-form-controls">
-                                    <input class="uk-input"  type="text" placeholder=""
+                            <div className="uk-width-1-4@s">
+                                <label className="uk-form-label">E-mail:</label>
+                                <div className="uk-form-controls">
+                                    <input className="uk-input"  type="text" placeholder=""
                                     value={form.email}
                                     onChange={e=>setForm({...form,email:e.target.value})}
                                     />
                                 </div>
                             </div>
+                            
                         </form>
                       </div>
                       <div className="uk-modal-footer uk-text-right">
                         <button className="uk-button uk-button-default uk-modal-close" type="button">CANCELAR</button>
-                        <button className="uk-button uk-button-primary" type="button" onClick={agregar_empleado}>GUARDAR</button>
+                        <button onClick={agregar_empleado} className="uk-button uk-button-secondary">GUARDAR</button>
+
+
                       </div>
                     </div>
                 </div>

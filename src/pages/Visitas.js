@@ -40,15 +40,19 @@ function Visitas(){
         console.log('Cat',catVisitantes);
     },[]);
 
-    const actionNuevoVisitante = (event)=>{
+    const actionNuevoVisitante = async(event)=>{
         event.preventDefault();
-        alert("ok");
-        //window.UIkit.modal('#modal-areas').hide();
+        try {
+            const data = await nuevo_visitante(form);
+            window.UIkit.alert('El empleado se registro con exito!');
+            const datos = await listaVisitas();
+            setVisitas(datos);
+            window.UIkit.modal('#modal-areas').hide();
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    const mi = ()=>{
-        alert("todo Ok");
-    }
 
     return <>
         <div className="contenido-unic">
@@ -196,7 +200,7 @@ function Visitas(){
                       <div className="uk-modal-footer uk-text-right">
                         
                         <button className="uk-button uk-button-default uk-modal-close" type="button">CANCELAR</button>
-                        <button className="uk-button uk-button-primary" onClick={()=>alert('Guardado')}>GUARDAR</button>
+                        <button className="uk-button uk-button-primary" onClick={async(e)=>await actionNuevoVisitante(e)}>GUARDAR</button>
                       </div>
                     </div> 
                 </div>

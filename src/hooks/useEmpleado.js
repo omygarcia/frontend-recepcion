@@ -52,7 +52,7 @@ const useEmpleado = () =>{
 
     const actualizar_empleado = async(form)=>{
          try{
-            const {data} = await axios.post('/empleado/update',form);
+            const {data} = await axios.put('/empleado/update/'+form.id_empleado,form);
             console.log('data',data);
             return data;
         }
