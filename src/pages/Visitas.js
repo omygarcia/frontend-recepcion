@@ -20,6 +20,7 @@ function Visitas(){
         email:"",
         motivo_visita:""
     });
+    const [mensajeError,setMensajeError] = useState("");
 
     useEffect(()=>{
       const cargar = async()=>{
@@ -44,13 +45,39 @@ function Visitas(){
         event.preventDefault();
         try {
             const data = await nuevo_visitante(form);
-            window.UIkit.alert('El empleado se registro con exito!');
-            const datos = await listaVisitas();
-            setVisitas(datos);
-            window.UIkit.modal('#modal-areas').hide();
+            if(data.errors === undefined)
+            {
+                await window.UIkit.modal.alert('El empleado se registro con exito!');
+                const datos = await listaVisitas();
+                setVisitas(datos);
+                setMensajeError("");
+                limpiar();
+            }
+            else{
+                let mensaje = '';
+                data.errors.map((err)=>{
+                    mensaje+=err.msg+"<br />";
+                });
+                setMensajeError(mensaje);
+                await window.UIkit.modal.alert(data.message);
+            }
+            
         } catch (error) {
             console.log(error);
+            await window.UIkit.modal.alert(error.message);
         }
+    }
+
+    const limpiar = ()=>{
+        setForm({
+            tipo_visitante:"",
+            nombres:"",
+            apellidos:"",
+            genero:"",
+            telefono:"",
+            email:"",
+            motivo_visita:""
+        });
     }
 
 
@@ -59,6 +86,91 @@ function Visitas(){
             <Header />
             <div className="contenido">
                 <div className="uk-container">
+                    {mensajeError===""?(<div></div>):(
+                        <div class="uk-alert-danger" uk-alert>
+                            <a href class="uk-alert-close" uk-close></a>
+                            <div dangerouslySetInnerHTML={{ __html: mensajeError }} />
+                        </div>
+                    )}
+                        
+                         <form className="uk-grid-small" uk-grid="true" onSubmit={actionNuevoVisitante}>
+                            <div className="uk-width-1-4@s">
+                                <label className="uk-form-label" for="form-stacked-text">Tipo Visitante:</label>
+                                <div className="uk-form-controls">
+                                    <select class="uk-input"  type="text" placeholder="" 
+                                    value={form.tipo_visitante}
+                                    onChange={e=>setForm({...form,tipo_visitante:e.target.value})}
+                                    >
+                                        {catVisitantes.length ===0?(
+                                            <option>No se encontraron registros</option>
+                                        ):(
+                                            catVisitantes.map((tipoVisi, index)=>(
+                                                <option value={tipoVisi.id_tipovisitante} key={index}>{tipoVisi.tipo_visitante}</option>
+                                            )))
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div className="uk-width-1-2@s"></div>
+                            <div className="uk-width-1-2@s">
+                                <label class="uk-form-label" for="form-stacked-text">Nombres:</label>
+                                <div class="uk-form-controls">
+                                    <input className="uk-input" type="text" placeholder=""
+                                    value={form.nombres}
+                                    onChange={e=>setForm({...form,nombres:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                             <div className="uk-width-1-4@s">
+                                <label className="uk-form-label" for="form-stacked-text">Apellidos:</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input"  type="text" placeholder=""
+                                    value={form.apellidos}
+                                    onChange={e=>setForm({...form,apellidos:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label className="uk-form-label" htmlFor="form-stacked-text">Genero:</label>
+                                <div className="uk-form-controls">
+                                    <select className="uk-input"
+                                    value={form.genero}
+                                    onChange={e=>setForm({...form,genero:e.target.value})}
+                                    >
+                                        <option value='Masculino'>Masculino</option>
+                                        <option value='Femenino'>Femenino</option>
+                                    </select>
+                                </div>
+                            </div>
+                             <div class="uk-width-1-2@s">
+                                <label class="uk-form-label" for="form-stacked-text">Telefono:</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input"  type="text" placeholder=""
+                                    value={form.telefono}
+                                    onChange={e=>setForm({...form,telefono:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                            <div class="uk-width-1-4@s">
+                                <label class="uk-form-label" for="form-stacked-text">E-mail:</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input"  type="text" placeholder=""
+                                    value={form.email}
+                                    onChange={e=>setForm({...form,email:e.target.value})}
+                                    />
+                                </div>
+                            </div>
+                            <div class="uk-width-1-1@s">
+                                <label class="uk-form-label" for="form-stacked-text">Motivo Visita:</label>
+                                <div class="uk-form-controls">
+                                    <textarea class="uk-input"  type="text" placeholder="" style={{width:'100%',height:'300px'}}
+                                    value={form.motivo_visita}
+                                    onChange={e=>setForm({...form,motivo_visita:e.target.value})}
+                                    ></textarea>
+                                </div>
+                                <button onClick={actionNuevoVisitante} className="uk-button uk-button-primary">GUARDAR</button>
+                            </div>
+                        </form>
                     <h1>Registro de Visitas</h1>
                     <button uk-toggle="target: #modal-areas" className="uk-button uk-button-primary">Nuevo</button>
                     <div style={{overflowY:'scroll',height:'100%'}}></div>
