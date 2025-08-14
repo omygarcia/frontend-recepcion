@@ -52,7 +52,7 @@ const useVisita = () =>{
 
     const actualizar_visistante = async(form)=>{
          try{
-            const {data} = await axios.post('/visitante/update',form);
+            const {data} = await axios.put('/visitante/update',form);
             console.log('data',data);
             return data;
         }

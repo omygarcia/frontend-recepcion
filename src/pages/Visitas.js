@@ -58,7 +58,7 @@ function Visitas(){
 
     const actionNuevoVisitante = async(event)=>{
         event.preventDefault();
-        const data = {};
+        let data = {};
         try {
             if(form.id_visitante =="")
             {
@@ -92,11 +92,15 @@ function Visitas(){
         }
     }
 
-    const delete_visitante = async(id)=>{
+    const delete_visitante = async({id_visitante,nombres})=>{
         try {
-            
+            await window.UIkit.modal.confirm("¿Desea eliminar al visitante: "+nombres+"?");
+            await eliminar_visitante(id_visitante);
+            await window.UIkit.modal.alert("El visitante se elimino con exito!");
+            const datos = await listaVisitas();
+            setVisitas(datos);
         } catch (error) {
-            
+            console.log(error);
         }
     }
 
@@ -242,7 +246,7 @@ function Visitas(){
                                         <button onClick={()=>editar_visita(empl.id_visitante)} className="uk-button uk-button-primary">
                                             Editar
                                         </button>
-                                        <button className="uk-button uk-button-danger">
+                                        <button onClick={()=>delete_visitante(empl)} className="uk-button uk-button-danger">
                                             Eliminar
                                         </button>
                                     </td>
