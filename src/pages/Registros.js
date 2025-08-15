@@ -28,7 +28,6 @@ function Empleados(){
             <div className="contenido">
                 <div className="uk-container">
                     <h1>Registro de Asistencia</h1>
-                    <button uk-toggle="target: #modal-areas" className="uk-button uk-button-primary">Nuevo</button>
                     <table className="uk-table uk-table-striped">
                         <thead>
                             <tr>
@@ -37,7 +36,6 @@ function Empleados(){
                                 <th>Hora Entrada</th>
                                 <th>Hora Salida</th>
                                 <th>Empleado</th>
-                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,14 +49,6 @@ function Empleados(){
                                     <td>{reg.hora_ingreso}</td>
                                     <td>{reg.hora_salida}</td>
                                     <td>{reg?.empleado.nombres}</td>
-                                    <td>
-                                        <button className="uk-button uk-button-primary">
-                                            Editar
-                                        </button>
-                                        <button className="uk-button uk-button-danger">
-                                            Eliminar
-                                        </button>
-                                    </td>
                                 </tr>
                             ))
                             )}

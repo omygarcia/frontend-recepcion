@@ -34,11 +34,26 @@ const useArea = () =>{
         }
     }
 
+    const eliminar_area = async(id)=>{
+         try{
+            const {data} = await axios.delete('/areas/delete/',id);
+            console.log('data',data);
+            return data;
+        }
+        catch(error)
+        {
+            console.log("ERROR: ");
+            console.log(error);
+            return [];
+        }
+    }
+
     return{
         listarAreas,
         setAreas,
         areas,
-        nueva_area
+        nueva_area,
+        eliminar_area
     }
 }
 

@@ -47,13 +47,20 @@ function DraggableMarker({ posicion, setPosicion }) {
 }
 
 function Areas() {
-  const {areas,listarAreas,nueva_area,setAreas} = useArea();
+  const {areas,listarAreas,nueva_area,setAreas, eliminar_area} = useArea();
   const [posicion, setPosicion] = useState(centerInicial);
+  const [mensajeError,setMensajeError] = useState("");
   const [form,setForm] = useState({
-    area:"",
-    hora_salida:"",
+    id_area:"",
+    nombre_area:"",
+    salon:"",
+    edificio:"",
+    responsable:"",
+    horario_entrada:"",
+    horario_salida:"",
     latitud:"",
-    longitud:""
+    longitud:"",
+    codigo_qr:""
   });
 
   useEffect(() => {
@@ -71,14 +78,171 @@ function Areas() {
   },[]);
 
 
+  const nuevaArea = async()=>{
+    let data = {};
+    try {
+      if(form.id_area =="")
+      {
+          data = await nueva_area(form);
+          await window.UIkit.modal.alert('El area se registro con exito!');
+      }
+      else{
+        //actualizar
+          data = await nueva_area(form);
+          await window.UIkit.modal.alert('El visitante se actualizo con exito!');
+      }
+      
+      if(data.errors === undefined)
+      {
+          const datos = await listarAreas();
+          setAreas(datos);
+          setMensajeError("");
+          limpiar();
+      }
+      else{
+          let mensaje = '';
+          data.errors.map((err)=>{
+              mensaje+=err.msg+"<br />";
+          });
+          setMensajeError(mensaje);
+          await window.UIkit.modal.alert(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const limpiar = ()=>{
+    setForm({
+      id_area:"",
+      nombre_area:"",
+      salon:"",
+      edificio:"",
+      responsable:"",
+      horario_entrada:"",
+      horario_salida:"",
+      latitud:"",
+      longitud:"",
+      codigo_qr:""
+    });
+  }
+
+
+  const eliminarArea = async({id_area,nombre_area})=>{
+    try {
+      await window.UIkit.modal.confirm("¿Desea eliminar el area: "+nombre_area+"?");
+      await eliminar_area(id_area);
+      await window.UIkit.modal.alert("El area se elimino con exito!");
+      const result = await listarAreas();
+      setAreas(result);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
 
   return (
     <div className="contenido-unic">
       <Header />
       <div className="contenido">
         <div className="uk-container">
+            <form class="uk-grid-small" uk-grid="true">
+                <div class="uk-width-1-2@s">
+                    <label class="uk-form-label" for="form-stacked-text">Nombre Area:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" type="text" placeholder=""
+                        value={form.nombre_area}
+                        onChange={e=>setForm({...form,nombre_area:e.target.value})}
+                        />
+                    </div>
+                </div>
+                 <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Salón:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.salon}
+                        onChange={e=>setForm({...form,salon:e.target.value})}
+                        />
+                    </div>
+                </div>
+                 <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Edificio:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.edificio}
+                        onChange={e=>setForm({...form,edificio:e.target.value})}
+                        />
+                    </div>
+                </div>
+                 <div class="uk-width-1-2@s">
+                    <label class="uk-form-label" for="form-stacked-text">Responsable:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.responsable}
+                        onChange={e=>setForm({...form,responsable:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Hora Entrada:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder="" 
+                        value={form.horario_entrada}
+                        onChange={e=>setForm({...form,horario_entrada:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Hora Salida:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.horario_salida}
+                        onChange={e=>setForm({...form,horario_salida:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Latitud:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.latitud}
+                        onChange={e=>setForm({...form,latitud:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Longitud:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.longitud}
+                        onChange={e=>setForm({...form,longitud:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <div class="uk-width-1-4@s">
+                    <label class="uk-form-label" for="form-stacked-text">Código QR:</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input"  type="text" placeholder=""
+                        value={form.codigo_qr}
+                        onChange={e=>setForm({...form,codigo_qr:e.target.value})}
+                        />
+                    </div>
+                </div>
+                <MapContainer
+                    center={posicion}
+                    zoom={17}
+                    style={{ width: '100%', height: '450px' }}
+                >
+                    <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    />
+                    <DraggableMarker posicion={posicion} setPosicion={setPosicion} />
+                </MapContainer>
+            </form>
             <h1 className="uk-text-center">Areas</h1>
-            <button uk-toggle="target: #modal-areas" className="uk-button uk-button-primary">Nuevo</button>
+            <button onClick={()=>nuevaArea()} className="uk-button uk-button-primary">GUARDAR</button>
+            <button className="uk-button uk-button-secondary">LIMPIAR</button>
             <h2>Lista de Aréas</h2>
             <table className="uk-table uk-table-striped">
                 <thead>
@@ -107,7 +271,7 @@ function Areas() {
                             <button className="uk-button uk-button-primary">
                                 Editar
                             </button>
-                            <button className="uk-button uk-button-danger">
+                            <button onClick={()=>eliminarArea(area)} className="uk-button uk-button-danger">
                                 Eliminar
                             </button>
                             <button onClick={()=>window.open(process.env.REACT_APP_API_URL+'reportes/'+area.id_area, '_blank')} className="uk-button uk-button-primary">
